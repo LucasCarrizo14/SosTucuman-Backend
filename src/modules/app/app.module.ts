@@ -4,18 +4,19 @@ import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { ConfigModule } from '@nestjs/config';
 import { ArchivosModule } from '../archivos/archivos.module.js';
-import { AutentificaciónModule } from '../autentificación/autentificación.module.js';
 import { CategoriasModule } from '../categorias/categorias.module.js';
 import { ReportesModule } from '../reportes/reportes.module.js';
 import { UbicacionesModule } from '../ubicaciones/ubicaciones.module.js';
 import { UsuariosModule } from '../usuarios/usuarios.module.js';
+import { Autentificacion } from '../autentificacion/entities/autentificacion.entity.js';
+import { AutentificacionModule } from '../autentificacion/autentificacion.module.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
 @Module({
   imports: [
     ArchivosModule,
-    AutentificaciónModule,
+    AutentificacionModule,
     CategoriasModule,
     ReportesModule,
     UbicacionesModule,
