@@ -10,11 +10,13 @@ import { UbicacionesModule } from '../ubicaciones/ubicaciones.module.js';
 import { UsuariosModule } from '../usuarios/usuarios.module.js';
 import { Autentificacion } from '../autentificacion/entities/autentificacion.entity.js';
 import { AutentificacionModule } from '../autentificacion/autentificacion.module.js';
+import { RolesModule } from '../roles/roles.module.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
 @Module({
   imports: [
+    RolesModule,
     ArchivosModule,
     AutentificacionModule,
     CategoriasModule,
