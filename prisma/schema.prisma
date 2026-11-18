@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model roles {
+  id_rol   Int        @id @default(autoincrement())
+  nombre   String     @db.VarChar(50)
+  usuarios usuarios[]
+}
+
+model usuarios {
+  id_usuario     Int        @id @default(autoincrement())
+  nombre         String     @db.VarChar(100)
+  apellido       String     @db.VarChar(100)
+  email          String     @unique @db.VarChar(150)
+  password_hash  String     @db.VarChar(255)
+  id_rol         Int
+  fecha_registro DateTime   @default(now()) @db.Timestamp()
+  rol            roles      @relation(fields: [id_rol], references: [id_rol])
+  reportes       reportes[]
+}
+
+model categorias {
+  id_categoria Int        @id @default(autoincrement())
+  nombre       String     @db.VarChar(100)
+  descripcion  String?    @db.Text
+  reportes     reportes[]
+}
+
+model ubicaciones {
+  id_ubicacion Int        @id @default(autoincrement())
+  direccion    String     @db.VarChar(255)
+  barrio       String     @db.VarChar(100)
+  latitud      Decimal    @db.Decimal(10, 8)
+  longitud     Decimal    @db.Decimal(11, 8)
+  reportes     reportes[]
+}
+
+model reportes {
+  id_reporte     Int         @id @default(autoincrement())
+  titulo         String      @db.VarChar(100)
+  descripcion    String      @db.Text
+  estado         String      @default("pendiente") @db.VarChar(50)
+  fecha_creacion DateTime    @default(now()) @db.Timestamp()
+  id_usuario     Int
+  id_categoria   Int
+  id_ubicacion   Int
+  usuario        usuarios    @relation(fields: [id_usuario], references: [id_usuario])
+  categoria      categorias  @relation(fields: [id_categoria], references: [id_categoria])
+  ubicacion      ubicaciones @relation(fields: [id_ubicacion], references: [id_ubicacion])
+  archivos       archivos[]
+}
+
+model archivos {
+  id_archivo  Int      @id @default(autoincrement())
+  url_archivo String   @db.VarChar(255)
+  formato     String   @db.VarChar(50)
+  id_reporte  Int
+  reporte     reportes @relation(fields: [id_reporte], references: [id_reporte])
+}

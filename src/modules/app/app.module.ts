@@ -11,11 +11,13 @@ import { UsuariosModule } from '../usuarios/usuarios.module.js';
 import { Autentificacion } from '../autentificacion/entities/autentificacion.entity.js';
 import { AutentificacionModule } from '../autentificacion/autentificacion.module.js';
 import { RolesModule } from '../roles/roles.module.js';
+import { PrismaModule } from '../../prisma/prisma.module.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
 @Module({
   imports: [
+    PrismaModule,
     RolesModule,
     ArchivosModule,
     AutentificacionModule,
