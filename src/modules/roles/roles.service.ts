@@ -1,26 +1,44 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from '../../prisma/prisma.service.js';
 import { CreateRoleDto } from './dto/create-role.dto.js';
 import { UpdateRoleDto } from './dto/update-role.dto.js';
 
 @Injectable()
 export class RolesService {
+  constructor(private readonly prisma: PrismaService) { }
+
   create(createRoleDto: CreateRoleDto) {
-    return 'This action adds a new role';
+    return this.prisma.roles.create({
+      data: createRoleDto,
+    });
   }
 
   findAll() {
-    return `This action returns all roles`;
+    return this.prisma.roles.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} role`;
+  async findOne(id: number) {
+    const rol = await this.prisma.roles.findUnique({
+      where: { id_rol: id },
+    });
+    if (!rol) {
+      throw new NotFoundException(`No se encontró el rol con ID ${id}`);
+    }
+    return rol;
   }
 
-  update(id: number, updateRoleDto: UpdateRoleDto) {
-    return `This action updates a #${id} role`;
+  async update(id: number, updateRoleDto: UpdateRoleDto) {
+    await this.findOne(id);
+    return this.prisma.roles.update({
+      where: { id_rol: id },
+      data: updateRoleDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} role`;
+  async remove(id: number) {
+    await this.findOne(id);
+    return this.prisma.roles.delete({
+      where: { id_rol: id },
+    });
   }
 }
