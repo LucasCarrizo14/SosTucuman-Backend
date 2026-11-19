@@ -1,26 +1,47 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from '../../prisma/prisma.service.js';
 import { CreateArchivoDto } from './dto/create-archivo.dto.js';
 import { UpdateArchivoDto } from './dto/update-archivo.dto.js';
 
 @Injectable()
 export class ArchivosService {
+  constructor(private readonly prisma: PrismaService) {}
+
   create(createArchivoDto: CreateArchivoDto) {
-    return 'This action adds a new archivo';
+    return this.prisma.archivos.create({
+      data: createArchivoDto,
+    });
   }
 
   findAll() {
-    return `This action returns all archivos`;
+    return this.prisma.archivos.findMany({
+      include: { reporte: true },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} archivo`;
+  async findOne(id: number) {
+    const archivo = await this.prisma.archivos.findUnique({
+      where: { id_archivo: id },
+      include: { reporte: true },
+    });
+    if (!archivo) {
+      throw new NotFoundException(`No se encontró el archivo con ID ${id}`);
+    }
+    return archivo;
   }
 
-  update(id: number, updateArchivoDto: UpdateArchivoDto) {
-    return `This action updates a #${id} archivo`;
+  async update(id: number, updateArchivoDto: UpdateArchivoDto) {
+    await this.findOne(id);
+    return this.prisma.archivos.update({
+      where: { id_archivo: id },
+      data: updateArchivoDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} archivo`;
+  async remove(id: number) {
+    await this.findOne(id);
+    return this.prisma.archivos.delete({
+      where: { id_archivo: id },
+    });
   }
 }
