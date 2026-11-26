@@ -14,31 +14,31 @@ Este repositorio contiene el **Backend (API REST)** encargado de gestionar la au
 
 ## Equipo de Desarrollo
 
-| Integrantes | 
+| Integrantes |
 
-| **María Sol Gerónimo** 
-| **Lucas Maximiliano Carrizo** 
+| **María Sol Gerónimo**
+| **Lucas Maximiliano Carrizo**
 
 ---
 
 ## Teconologias Utilizadas
 
-* **Entorno de ejecución:** Node.js
-* **Framework Backend:** NestJS (arquitectura modular)
-* **Lenguaje:** TypeScript
-* **ORM y Migraciones:** Prisma 7 (`@prisma/client` + `@prisma/adapter-pg`)
-* **Motor de Base de Datos:** PostgreSQL
-* **Validación y Transformación:** `class-validator` y `class-transformer`
-* **Pruebas de Endpoints:** Postman
+- **Entorno de ejecución:** Node.js
+- **Framework Backend:** NestJS (arquitectura modular)
+- **Lenguaje:** TypeScript
+- **ORM y Migraciones:** Prisma 7 (`@prisma/client` + `@prisma/adapter-pg`)
+- **Motor de Base de Datos:** PostgreSQL
+- **Validación y Transformación:** `class-validator` y `class-transformer`
+- **Pruebas de Endpoints:** Postman
 
 ---
 
-##  Arquitectura y Estructura del Proyecto
+## Arquitectura y Estructura del Proyecto
 
 El backend implementa una arquitectura en capas donde cada solicitud HTTP sigue el flujo:
 **`Cliente (Postman/Frontend) ➔ DTO (Validación) ➔ Controller (Rutas) ➔ Service (Lógica + Prisma) ➔ PostgreSQL`**
 
-```text
+````text
 SosTucuman-Backend/
 ├── prisma/
 │   ├── migrations/              # Historial de migraciones SQL versionadas
@@ -59,3 +59,15 @@ SosTucuman-Backend/
 ├── prisma.config.ts             # Configuración de datasource y CLI de Prisma 7
 ├── .env                         # Variables de entorno (excluido en .gitignore)
 └── package.json
+
+## Autenticación con JWT
+
+Se implementó el módulo de autenticación (`autentificacion`) integrado con el modelo de usuario y la base de datos PostgreSQL existentes, permitiendo el registro de cuentas y el inicio de sesión mediante tokens JWT.
+
+### 1. Dependencias instaladas
+```bash
+npm install @nestjs/jwt bcrypt
+npm install -D @types/bcrypt
+
+con ellas las contraseñas seran con hash y no seran visibles para ninguno de los roles manteniendo la seguridad de la pagina.
+````
